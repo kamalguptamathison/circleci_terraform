@@ -12,7 +12,7 @@ workflows:
           checkout: true
           context: terraform
           persist-workspace: true
-          path: terrafom
+          path: terraform
           requires:
             - terraform/validate
       - hold:
