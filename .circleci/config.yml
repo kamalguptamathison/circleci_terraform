@@ -10,7 +10,6 @@ workflows:
       - terraform/plan:
           checkout: true
           context: terraform
-          type: approval
           persist-workspace: true
           requires:
             - terraform/validate
