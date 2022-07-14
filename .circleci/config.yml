@@ -1,29 +1,9 @@
-version: '2.1'
-orbs:
-  terraform: circleci/terraform@3.1.0
-workflows:
-  deploy_infra:
-    jobs:
-      - terraform/validate:
-          checkout: true
-          context: terraform
-          path: terraform
-      - terraform/plan:
-          checkout: true
-          context: terraform
-          persist-workspace: true
-          path: terraform
-          requires:
-            - terraform/validate
-      - hold:
-          type: approval
-          requires:
-            - terraform/plan
-      # - terraform/apply:
-      #     attach-workspace: true
-      #     context: terraform
-      #     filters:
-      #       branches:
-      #         only: main
-      #     requires:
-      #       - hold
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: cimg/python:3.10.5
+    steps:
+      - checkout
+      - run: sudo pip3 install aws-cli
+    
