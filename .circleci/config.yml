@@ -4,7 +4,9 @@ jobs:
     docker:
       - image: cimg/python:3.10.5
     steps:
-      - checkout    
-      - command:  |
-          sudo pip3 install aws-cli
-    
+      - run:
+          name: Install kubectl
+          command: |
+            curl -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin/kubectl
