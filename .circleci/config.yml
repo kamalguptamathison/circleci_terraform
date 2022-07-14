@@ -7,7 +7,7 @@ jobs:
       - run:
           name: Install aws-cli
           command: |
-            pip3 install aws-cli
+            /home/circleci/.pyenv/versions/3.10.5/bin/python3.10 -m pip install --upgrade pip
       - run:
           name: Install kubectl
           command: |
