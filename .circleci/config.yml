@@ -2,14 +2,13 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/python:3.10.5
+      - image: cimg/base:2022.06
     steps:
       - run:
           name: Install aws-cli
           command: |
-            /home/circleci/.pyenv/versions/3.10.5/bin/python3.10 -m pip install --upgrade pip
-            pip install aws-cli
-            pip install python-terraform
+            sudo apt-get install python3-pip
+            pip3 install aws-cli
       - run:
           name: Install kubectl
           command: |
