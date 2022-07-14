@@ -29,6 +29,10 @@ jobs:
           name: terraform init
           command: |
             terraform init
+      - run:
+          name: terraform plan
+          command: | 
+            terraform plan
 workflows:
   version: 2
   build_and_test:
