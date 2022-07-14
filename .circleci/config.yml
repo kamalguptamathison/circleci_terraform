@@ -29,4 +29,9 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - test
+      - test:
+          context: mathison-turingdev
+          run:
+            name: terraform init
+            command: |
+              terraform init
