@@ -34,4 +34,4 @@ workflows:
   build_and_test:
     jobs:
       - test:
-          context: mathison-turingdev
+          context: terraform
