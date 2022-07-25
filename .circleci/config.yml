@@ -4,14 +4,12 @@ orbs:
 workflows:
   deploy_infrastructure:
     jobs:
-      - run: 
-          command: pwd
+
       - terraform/validate:
+          path: ~./circleci_terraform/
           checkout: true
-          path: circleci_terraform
           context: terraform
 
       - terraform/plan:
-          path: circleci_terraform
           checkout: true
           context: terraform
