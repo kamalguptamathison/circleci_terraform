@@ -2,12 +2,12 @@ version: '2.1'
 orbs:
   heroku: circleci/heroku@0.0.10
   slack: circleci/slack@4.1
-  jobs:
-    build:
-      docker:
-        - image: circleci/node:10.16.3
-      working_directory: ~/search-yc-top-companies
-      steps:
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.16.3
+    working_directory: ~/search-yc-top-companies
+    steps:
         - checkout
         # install dependencies
         - run:
@@ -16,7 +16,7 @@ orbs:
         - run:
             name: Build
             command: npm run build
-    status:
+  status:
       docker:
         - image: cimg/base:stable
       steps:
