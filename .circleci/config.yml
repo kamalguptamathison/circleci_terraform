@@ -4,7 +4,6 @@ orbs:
 workflows:
   deploy_infrastructure:
     jobs:
-
       - terraform/validate:
           path: ~./circleci_terraform/
           checkout: true
@@ -13,3 +12,4 @@ workflows:
       - terraform/plan:
           checkout: true
           context: terraform
+          path: ~./circleci_terraform/
