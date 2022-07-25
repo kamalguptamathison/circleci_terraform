@@ -4,7 +4,6 @@ orbs:
 workflows:
   deploy_infrastructure:
     jobs:
-      - checkout 
       - terraform/fmt:
           path: ~/.circleci_terraform
           checkout: true
