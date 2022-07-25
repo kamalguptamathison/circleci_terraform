@@ -4,19 +4,16 @@ orbs:
 workflows:
   deploy_infrastructure:
     jobs:
-      - terraform/fmt:
-          path: ~/.circleci_terraform
-          checkout: true
-          context: terraform
       - terraform/validate:
           checkout: true
+          path: circleci_terraform
           context: terraform
           requires:
             - terraform/fmt
       - terraform/plan:
+          path: circleci_terraform
           checkout: true
           context: terraform
-          persist-workspace: true
           requires:
             - terraform/validate
 
