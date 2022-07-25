@@ -27,11 +27,11 @@ orbs:
         - slack/notify:
             event: pass
             template: success_tagged_deploy_1
-  workflows:
+workflows:
     heroku_deploy:
       jobs:
         - build
-        - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
+        - heroku/deploy-via-git:
             requires:
               - build
         - status:
