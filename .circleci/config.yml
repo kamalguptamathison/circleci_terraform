@@ -1,7 +1,13 @@
 jobs:
+orbs:
+  slack: circleci/slack@4.1
+jobs:
   build:
     docker:
       - image: cimg/python:3.10.5
     steps:
       - checkout
       - run: python --version
+      - slack/notify:
+        event: pass
+        template: success_tagged_deploy_1
