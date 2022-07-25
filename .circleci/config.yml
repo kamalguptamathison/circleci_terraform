@@ -8,8 +8,7 @@ workflows:
           checkout: true
           path: circleci_terraform
           context: terraform
-          requires:
-            - terraform/fmt
+
       - terraform/plan:
           path: circleci_terraform
           checkout: true
