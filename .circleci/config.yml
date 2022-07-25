@@ -1,18 +1,23 @@
-version: 2.1
-orbs: 
-  terraform: circleci/terraform@3.1.0
-jobs:
-  notify:
-    step: 
-      - checkout
-      - terraform/fmt:
-        checkout: true
-        context: terraform 
-        path: ~/.circleci_terraform/
-      - terraform/validate:
-        checkout: true
-        context: terraform
+version: '2.1'
+orbs:
+  terraform: circleci/terraform@3.1
 workflows:
-  deploy_and_notify:
+  deploy_infrastructure:
     jobs:
-      - notify
+      - checkout 
+      - terraform/fmt:
+          path: ~/.circleci_terraform
+          checkout: true
+          context: terraform
+      - terraform/validate:
+          checkout: true
+          context: terraform
+          requires:
+            - terraform/fmt
+      - terraform/plan:
+          checkout: true
+          context: terraform
+          persist-workspace: true
+          requires:
+            - terraform/validate
+
