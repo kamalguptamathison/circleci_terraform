@@ -7,6 +7,7 @@ jobs:
       - image: 'cimg/base:stable'
     steps:
       - slack/notify:
+          channel: https://mathison-workspace.slack.com/archives/D03FTGJ6EJJ
           custom: |
             {
               "blocks": [
