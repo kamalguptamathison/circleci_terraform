@@ -1,31 +1,22 @@
 version: 2.1
 orbs:
   slack: circleci/slack@4.9.3
-jobs:
-  notify:
+executors:
+  environment:
     docker:
-      - image: 'cimg/base:stable'
+      - image: cimg/base
+    working_directory: ~/repo
+jobs:
+  build:
+    executor: environment
     steps:
-      - slack/notify:
-          channel: https://mathison-workspace.slack.com/archives/D03FTGJ6EJJ
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "plain_text",
-                      "text": "*This is a text notification*",
-                      "emoji": true
-                    }
-                  ]
-                }
-              ]
-            }
-          event: always
+      - checkout
+      - run: mkdir -p ~/repo/workspace
+      - run:
+        command: |
+          echo $CIRCLE_USERNAME
 workflows:
-  send-notification:
+  version: 2
+  build_and_copy:
     jobs:
-      - notify:
-          context: slack-secrets
+      - build:
