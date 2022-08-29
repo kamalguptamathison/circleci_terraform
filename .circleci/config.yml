@@ -11,6 +11,7 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p ~/repo/workspace
+      - run: ls 
 
 
 workflows:
