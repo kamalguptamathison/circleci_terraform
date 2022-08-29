@@ -10,49 +10,7 @@ jobs:
     executor: environment
     steps:
       - checkout
-      # Make workspace directory
       - run: mkdir -p ~/repo/workspace
-      # Setup for AWS
-      - run:
-          name: Install depends
-          command: |
-            sudo apt-get update && sudo apt-get install --no-install-recommends -y \
-              python3-pip \
-              python3-dev \
-              python3-setuptools \
-              apt-transport-https \
-              ca-certificates \
-              zip \
-              curl \
-              gnupg2 \
-              software-properties-common
-
-      - run:
-          name: Install awscli with pip
-          command: |
-            pip3 install --upgrade --user wheel
-            pip3 install --upgrade --user awscli
-
-      - run:
-          name: npm install
-          command: |
-            npm install
-            npm install @ng-bootstrap/ng-bootstrap
-      # run production build
-      - run:
-          name: Production build
-          command: |
-                npm run build
-
-      # Create persistent workspace
-      - persist_to_workspace:
-          root: ~/repo/workspace
-
-  copy-to-s3:
-    executor: environment
-    steps:
-      - attach_workspace:
-        at: ~/repo/workspace
 
 
 workflows:
@@ -60,6 +18,3 @@ workflows:
   build_and_copy:
     jobs:
       - build
-      - copy-to-s3:
-          requires:
-            - build
