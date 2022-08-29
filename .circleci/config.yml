@@ -1,46 +1,65 @@
 version: 2.1
-
 executors:
-  my-executor:
+  environment:
     docker:
-      - image: cimg/base
-  # context / project UI env-var reference
-    working_directory: /tmp
+      - image: circleci/node:10.14-browsers
+    working_directory: ~/repo
 
 jobs:
-  flow:
-    executor: my-executor
+  build:
+    executor: environment
     steps:
-      - run: mkdir -p workspace
-      - run: echo "Hello, world!" > workspace/echo-output
+      - checkout
+      # Make workspace directory
+      - run: mkdir -p ~/repo/workspace
+      # Setup for AWS
+      - run:
+          name: Install depends
+          command: |
+            sudo apt-get update && sudo apt-get install --no-install-recommends -y \
+              python3-pip \
+              python3-dev \
+              python3-setuptools \
+              apt-transport-https \
+              ca-certificates \
+              zip \
+              curl \
+              gnupg2 \
+              software-properties-common
 
-      # Persist the specified paths (workspace/echo-output) into the workspace for use in downstream job.
+      - run:
+          name: Install awscli with pip
+          command: |
+            pip3 install --upgrade --user wheel
+            pip3 install --upgrade --user awscli
+
+      - run:
+          name: npm install
+          command: |
+            npm install
+            npm install @ng-bootstrap/ng-bootstrap
+      # run production build
+      - run:
+          name: Production build
+          command: |
+                npm run build
+
+      # Create persistent workspace
       - persist_to_workspace:
-          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
-          # taken to be the root directory of the workspace.
-          root: workspace
-          # Must be relative path from root
-          paths:
-            - echo-output
+          root: ~/repo/workspace
 
-  downstream:
-    executor: my-executor
+  copy-to-s3:
+    executor: environment
     steps:
       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: /tmp/workspace
+        at: ~/repo/workspace
 
-      - run: |
-          if [[ `cat /tmp/workspace/echo-output` == "Hello, world!" ]]; then
-            echo "It worked!";
-          else
-            echo "Nope!"; exit 1
-          fi
 
 workflows:
-  btd:
+  version: 2
+  build_and_copy:
     jobs:
-      - flow
-      - downstream:
+      - build
+      - copy-to-s3:
           requires:
-            - flow
+            - build
