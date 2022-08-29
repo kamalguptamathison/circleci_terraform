@@ -2,7 +2,7 @@ version: 2.1
 executors:
   environment:
     docker:
-      - image: circleci/node:10.14-browsers
+      - image: circleci/python
     working_directory: ~/repo
 
 jobs:
